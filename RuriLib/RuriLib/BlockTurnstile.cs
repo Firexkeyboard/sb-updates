@@ -231,7 +231,7 @@ public class BlockTurnstile : BlockBase
 
             // Find cf-bypass.exe next to the running exe
             string exeDir = AppDomain.CurrentDomain.BaseDirectory;
-            string cfExe = Path.Combine(exeDir, "cf-bypass.exe");
+            string cfExe = Path.Combine(exeDir, "Solvers", "cf-bypass.exe");
 
             if (!File.Exists(cfExe))
                 throw new FileNotFoundException(

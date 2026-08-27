@@ -194,7 +194,7 @@ public class BlockAkmCookies : BlockBase
             }
 
             string exeDir = AppDomain.CurrentDomain.BaseDirectory;
-            string exe    = Path.Combine(exeDir, "akmcookies.exe");
+            string exe    = Path.Combine(exeDir, "Solvers", "akmcookies.exe");
 
             if (!File.Exists(exe))
                 throw new FileNotFoundException($"[AKM] akmcookies.exe not found at: {exe}");

@@ -154,7 +154,7 @@ public class BlockDataDome : BlockBase
             if (IsPortOpen(port)) return;
 
             string exeDir = AppDomain.CurrentDomain.BaseDirectory;
-            string exe    = Path.Combine(exeDir, "datadome.exe");
+            string exe    = Path.Combine(exeDir, "Solvers", "datadome.exe");
 
             if (!File.Exists(exe))
                 throw new FileNotFoundException($"[DD] datadome.exe not found at {exe}");

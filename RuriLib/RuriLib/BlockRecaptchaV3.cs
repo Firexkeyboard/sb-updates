@@ -151,7 +151,7 @@ public class BlockRecaptchaV3 : BlockBase
             if (IsPortOpen(port)) return;
 
             string exeDir = AppDomain.CurrentDomain.BaseDirectory;
-            string exe    = Path.Combine(exeDir, "recaptcha-v3.exe");
+            string exe    = Path.Combine(exeDir, "Solvers", "recaptcha-v3.exe");
 
             if (!File.Exists(exe))
                 throw new FileNotFoundException($"[RC3] recaptcha-v3.exe not found at {exe}");

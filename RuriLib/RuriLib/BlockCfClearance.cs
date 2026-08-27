@@ -168,7 +168,7 @@ public class BlockCfClearance : BlockBase
             if (IsPortOpen(port)) return;
 
             string exeDir = AppDomain.CurrentDomain.BaseDirectory;
-            string exe    = Path.Combine(exeDir, "cf-clearance.exe");
+            string exe    = Path.Combine(exeDir, "Solvers", "cf-clearance.exe");
 
             if (!File.Exists(exe))
                 throw new FileNotFoundException($"[CF] cf-clearance.exe not found at {exe}");

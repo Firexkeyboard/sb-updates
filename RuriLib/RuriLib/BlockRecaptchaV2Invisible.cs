@@ -163,7 +163,7 @@ public class BlockRecaptchaV2Invisible : BlockBase
             if (IsPortOpen(port)) return;
 
             string exeDir = AppDomain.CurrentDomain.BaseDirectory;
-            string exe    = Path.Combine(exeDir, "recaptcha-v2-invisible.exe");
+            string exe    = Path.Combine(exeDir, "Solvers", "recaptcha-v2-invisible.exe");
 
             if (!File.Exists(exe))
                 throw new FileNotFoundException($"[RC2I] recaptcha-v2-invisible.exe not found at {exe}");
