@@ -1,0 +1,17 @@
+<?xml version='1.0'?>
+<Obfuscator>
+  <Var name="InPath"           value="C:\Users\alber\Downloads\SilverBullet_Project\build\publish" />
+  <Var name="OutPath"          value="C:\Users\alber\Downloads\SilverBullet_Project\build\obfuscated" />
+  <!-- Keep public API so SilverBullet.dll references still work -->
+  <Var name="KeepPublicApi"    value="true" />
+  <Var name="HidePrivateApi"   value="true" />
+  <Var name="RenameProperties" value="true" />
+  <Var name="RenameEvents"     value="true" />
+  <Var name="RenameFields"     value="true" />
+  <Var name="UseUnicodeNames"  value="true" />
+  <Var name="OptimizeMethods"  value="true" />
+
+  <Module file="$(InPath)\RuriLib.dll" />
+  <Module file="$(InPath)\SilverBullet.dll" />
+
+</Obfuscator>

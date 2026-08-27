@@ -1,0 +1,53 @@
+# Build outputs
+build/
+bin/
+obj/
+
+# Large EO browser engine DLLs (110 MB+, can't push to GitHub without LFS)
+SilverBullet/libs/EO.WebEngine.dll
+*.user
+*.suo
+.vs/
+_ReSharper*/
+
+# Debug symbols
+*.pdb
+
+# NuGet
+packages/
+*.nupkg
+.nuget/
+
+# Publish artifacts
+publish/
+win-x64-sf/
+win-x64/
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Logs
+Log.txt
+*.log
+
+# Obfuscation artifacts (keep configs but not output/mapping)
+build/obfuscated/
+Mapping.txt
+
+# Extra files/folders in project root that aren't source
+_backups/
+release/
+release_clean/
+publish-out/
+SilverBullet-*/
+Configs/
+*.loli
+*.zip
+*.md
+*.txt
+publish.ps1
+
+# User data
+UserData/

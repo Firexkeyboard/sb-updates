@@ -1,0 +1,438 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>SilverBullet</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <OutputType>WinExe</OutputType>
+    <UseWPF>True</UseWPF>
+    <UseWindowsForms>True</UseWindowsForms>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <OutputPath>C:\Users\alber\Downloads\SilverBullet_Project\build\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <LangVersion>12.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <!-- Proyectos internos -->
+  <ItemGroup>
+    <ProjectReference Include="..\RuriLib\RuriLib.csproj" />
+  </ItemGroup>
+
+  <!-- WPFToolkit — legacy Microsoft WPF Toolkit, referenced by BAML at runtime (PKT=31bf3856ad364e35) -->
+  <ItemGroup>
+    <Reference Include="WPFToolkit">
+      <HintPath>libs\WPFToolkit.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- EO.WebBrowser — signed originals (PKT=e92353a6bf73fffc) required by embedded BAML -->
+  <ItemGroup>
+    <Reference Include="EO.WebBrowser.Wpf">
+      <HintPath>libs\EO.WebBrowser.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.WebBrowser">
+      <HintPath>libs\EO.WebBrowser.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.Base">
+      <HintPath>libs\EO.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="EO.WebEngine">
+      <HintPath>libs\EO.WebEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <!-- Restore signed EO DLLs after publish (dotnet publish overwrites them with unsigned NuGet versions) -->
+  <Target Name="RestoreSignedEoDlls" AfterTargets="Publish">
+    <Copy SourceFiles="libs\EO.WebBrowser.Wpf.dll" DestinationFolder="$(PublishDir)" OverwriteReadOnlyFiles="true" />
+    <Copy SourceFiles="libs\EO.WebBrowser.dll"     DestinationFolder="$(PublishDir)" OverwriteReadOnlyFiles="true" />
+    <Copy SourceFiles="libs\EO.Base.dll"           DestinationFolder="$(PublishDir)" OverwriteReadOnlyFiles="true" />
+    <Copy SourceFiles="libs\EO.WebEngine.dll"      DestinationFolder="$(PublishDir)" OverwriteReadOnlyFiles="true" />
+  </Target>
+
+  <!-- NuGet: UI / WPF -->
+  <ItemGroup>
+    <PackageReference Include="MahApps.Metro" Version="2.4.9" />
+    <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome" Version="4.11.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.11.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Ionicons" Version="4.11.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Core" Version="4.11.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <!-- Xceed via HintPath: el BAML embebido referencia la firma original (PKT=3e4669d2f30244f4) -->
+    <!-- Si se usara el NuGet package se genera Xceed.Wpf.Toolkit.NET5.dll (PKT diferente) →
+         colisión de tipos entre BAML (viejo) y código compilado (nuevo) → InvalidCastException. -->
+
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="LiteDB" Version="5.0.17" />
+    <PackageReference Include="AngleSharp" Version="1.1.2" />
+    <PackageReference Include="CaptchaSharp" Version="1.0.13" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2792.45" />
+  </ItemGroup>
+
+  <!-- DLLs sin equivalente NuGet compatible -->
+  <ItemGroup>
+    <Reference Include="PluginFramework">
+      <HintPath>..\..\Telegram Desktop\SilverBullet.v1.1.4 Re-upload\SilverBullet.v1.1.4 Re-upload\bin\PluginFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit">
+      <HintPath>..\build\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <!-- Recursos BAML e imágenes embebidos -->
+  <ItemGroup>
+    <None Remove="views\dialogs\dialogsetproxies.baml" />
+    <None Remove="images\icons\filter.png" />
+    <None Remove="views\main\verifiedmarket.baml" />
+    <None Remove="themes\metrodark\styles.shared.baml" />
+    <None Remove="views\main\requirespage.baml" />
+    <None Remove="images\icons\load.png" />
+    <None Remove="images\icons\add-32.png" />
+    <None Remove="views\stackerblocks\pageblocktcp.baml" />
+    <None Remove="views\main\configs\otheroptions\proxies.baml" />
+    <None Remove="images\icons\maximize.png" />
+    <None Remove="views\dialogs\dialogaddwordlist.baml" />
+    <None Remove="images\icons\play.png" />
+    <None Remove="views\usercontrols\filters\usercontrolnegate.baml" />
+    <None Remove="views\main\wordlistmanager.baml" />
+    <None Remove="views\usercontrols\filters\usercontrolenumbox.baml" />
+    <None Remove="views\usercontrols\buttoncontainer.baml" />
+    <None Remove="views\main\settings\rurilib\selenium.baml" />
+    <None Remove="images\themes\empty.png" />
+    <None Remove="images\icons\log.png" />
+    <None Remove="images\icons\git.png" />
+    <None Remove="views\main\runnermanager.baml" />
+    <None Remove="views\main\settings\openbullet\sources.baml" />
+    <None Remove="views\main\settings\openbullet\general.baml" />
+    <None Remove="views\stackerblocks\pageblockwebsocket.baml" />
+    <None Remove="images\icons\grip.png" />
+    <None Remove="views\usercontrols\filters\usercontrolinputtextandboolean.baml" />
+    <!-- checkupdatepage.baml replaced by CheckUpdatePage.xaml (Page build action) -->
+    <None Remove="views\main\configs\otheroptions\inputs.baml" />
+    <None Remove="views\main\toolssection.baml" />
+    <None Remove="views\main\configs\configmanager.baml" />
+    <None Remove="views\main\configs\configocrsettings.baml" />
+    <None Remove="views\main\configs\configotheroptions.baml" />
+    <None Remove="images\icons\add-512.png" />
+    <None Remove="themes\metrodark\metrodark.mscontrols.core.implicit.baml" />
+    <None Remove="fonts\fontawesome-webfont.ttf" />
+    <None Remove="images\icons\code.png" />
+    <None Remove="images\icons\import.png" />
+    <None Remove="views\main\settings\obsettings.baml" />
+    <None Remove="oblogoicon.ico" />
+    <None Remove="views\stackerblocks\pagesblockelementaction.baml" />
+    <None Remove="images\icons\scan.png" />
+    <None Remove="views\main\settings\rurilib\ocr.baml" />
+    <None Remove="images\icons\stop.png" />
+    <None Remove="fonts\centurygothicbold.ttf" />
+    <None Remove="images\icons\clone.png" />
+    <None Remove="views\main\runner\runner.baml" />
+    <None Remove="views\usercontrols\usercontrolwordlist.baml" />
+    <None Remove="views\main\settings\openbullet\sounds.baml" />
+    <None Remove="views\main\hitsdb.baml" />
+    <None Remove="views\usercontrols\usercontroltext.baml" />
+    <None Remove="views\main\tools\tessdatadownloads.baml" />
+    <None Remove="views\stackerblocks\blockpluginpage.baml" />
+    <None Remove="images\icons\star.png" />
+    <None Remove="views\usercontrols\usercontrolsupport.baml" />
+    <None Remove="views\main\silverzone.baml" />
+    <None Remove="images\icons\search.png" />
+    <None Remove="views\usercontrols\filters\usercontrolfastnlmeansdenoisingcolored.baml" />
+    <None Remove="maindialog.baml" />
+    <None Remove="views\stackerblocks\pagesblocknavigate.baml" />
+    <None Remove="views\main\releasenotespage.baml" />
+    <None Remove="images\icons\disable.png" />
+    <None Remove="views\main\configs\otheroptions\compile.baml" />
+    <None Remove="views\dialogs\dialogaddblock.baml" />
+    <None Remove="views\usercontrols\filters\usercontrolcroplayer.baml" />
+    <None Remove="images\icons\stack.png" />
+    <None Remove="views\main\settings\rurilib\general.baml" />
+    <None Remove="views\stackerblocks\pageblockbypasscf.baml" />
+    <None Remove="icon\svbfile.ico" />
+    <None Remove="views\dialogs\dialogselectwordlist.baml" />
+    <None Remove="images\icons\new.png" />
+    <None Remove="views\main\tools\wordlisttools.baml" />
+    <None Remove="images\icons\add-128.png" />
+    <None Remove="views\main\configs\otheroptions\requests.baml" />
+    <!-- help.baml removed -->
+    <None Remove="logwindow.baml" />
+    <None Remove="images\silverbullet-20icon.ico" />
+    <None Remove="views\usercontrols\usercontrolconfig.baml" />
+    <None Remove="views\main\aboutpage.baml" />
+    <None Remove="loadingwindow.baml" />
+    <None Remove="views\main\supporters.baml" />
+    <None Remove="images\icons\undo.png" />
+    <None Remove="images\obicon.png" />
+    <None Remove="views\usercontrols\usercontrolnumeric.baml" />
+    <None Remove="views\dialogs\dialogselectconfig.baml" />
+    <None Remove="images\icons\filedocmultiple.png" />
+    <None Remove="views\dialogs\dialogcustominput.baml" />
+    <None Remove="views\usercontrols\filters\usercontrolresolution.baml" />
+    <None Remove="views\stackerblocks\pageblockspeechtotext.baml" />
+    <None Remove="views\usercontrols\filters\usercontroladaptivethreshold.baml" />
+    <None Remove="images\icons\book.png" />
+    <None Remove="themes\metrodark\howtoapplytheme.txt" />
+    <None Remove="views\dialogs\dialogeditwordlist.baml" />
+    <None Remove="views\dialogs\dialogshowlog.baml" />
+    <None Remove="views\main\configs\stacker.baml" />
+    <None Remove="views\main\configs\otheroptions\selenium.baml" />
+    <None Remove="views\stackerblocks\pageblockutility.baml" />
+    <None Remove="views\dialogs\findreplacedialog.baml" />
+    <None Remove="views\stackerblocks\pageblockcaptcha.baml" />
+    <None Remove="views\stackerblocks\pageblockreportcaptcha.baml" />
+    <None Remove="views\usercontrols\usercontroltextmulti.baml" />
+    <None Remove="images\icons\tasks.png" />
+    <None Remove="fonts\centurygothicregular.ttf" />
+    <None Remove="views\usercontrols\usercontrolcheckbox.baml" />
+    <None Remove="images\icons\gears.png" />
+    <None Remove="views\main\settings\rlsettings.baml" />
+    <None Remove="views\usercontrols\usercontroldropdown.baml" />
+    <None Remove="views\usercontrols\filters\usercontrolmorphology.baml" />
+    <None Remove="views\usercontrols\filters\usercontrolcvtcolor.baml" />
+    <None Remove="views\main\configssection.baml" />
+    <None Remove="views\usercontrols\filters\usercontrolinput.baml" />
+    <None Remove="snowflake.baml" />
+    <None Remove="views\main\tools\listgenerator.baml" />
+    <None Remove="themes\metrodark\theme.colors.baml" />
+    <None Remove="images\icons\retry.png" />
+    <None Remove="views\usercontrols\usercontrolfilepicker.baml" />
+    <None Remove="images\icons\remove-20filter.png" />
+    <None Remove="views\main\settings\rurilib\cefsharp.baml" />
+    <None Remove="views\dialogs\dialogaddproxies.baml" />
+    <None Remove="mainwindow.baml" />
+    <None Remove="views\stackerblocks\pageblockparse.baml" />
+    <None Remove="views\stackerblocks\pageblockocr.baml" />
+    <None Remove="views\stackerblocks\pagesblockexecutejs.baml" />
+    <None Remove="views\usercontrols\usercontrolcontainer.baml" />
+    <None Remove="images\icons\camera.png" />
+    <None Remove="views\main\settings\openbullet\themes.baml" />
+    <None Remove="views\usercontrols\plugincontrol.baml" />
+    <None Remove="images\sbicon.png" />
+    <None Remove="noteswindow.baml" />
+    <None Remove="views\main\configs\otheroptions\general.baml" />
+    <None Remove="views\dialogs\dialognewconfig.baml" />
+    <None Remove="images\icons\up.png" />
+    <None Remove="views\main\settings\rurilib\proxies.baml" />
+    <None Remove="views\stackerblocks\pageblockrecaptcha.baml" />
+    <None Remove="views\dialogs\dialogselectbots.baml" />
+    <None Remove="views\main\configs\otheroptions\data.baml" />
+    <None Remove="views\stackerblocks\pageblocklscode.baml" />
+    <None Remove="views\main\tools\seleniumtools.baml" />
+    <None Remove="views\usercontrols\filters\usercontrolhoughline.baml" />
+    <None Remove="images\icons\sbicon.png" />
+    <None Remove="images\icons\minimize.png" />
+    <None Remove="views\usercontrols\filters\usercontrolreplacecolor.baml" />
+    <None Remove="views\usercontrols\filters\usercontrolthreshold.baml" />
+    <None Remove="splashwindow.baml" />
+    <None Remove="views\main\proxymanager.baml" />
+    <None Remove="images\icons\down.png" />
+    <None Remove="views\usercontrols\usercontrolinfotext.baml" />
+    <None Remove="images\icons\folder.png" />
+    <None Remove="views\stackerblocks\pageblockkeycheck.baml" />
+    <None Remove="themes\metrodark\styles.wpf.baml" />
+    <None Remove="views\stackerblocks\pageblocksolvecaptcha.baml" />
+    <None Remove="views\stackerblocks\pagesblockbrowseraction.baml" />
+    <None Remove="images\icons\delete.png" />
+    <None Remove="views\stackerblocks\pageblockfunction.baml" />
+    <None Remove="views\main\settings.baml" />
+    <None Remove="images\icons\save.png" />
+    <None Remove="images\icons\plus.png" />
+    <None Remove="views\usercontrols\usercontrolmarket.baml" />
+    <None Remove="views\usercontrols\filters\usercontrolresize.baml" />
+    <None Remove="images\icons\left.png" />
+    <None Remove="images\icons\quit.png" />
+    <None Remove="views\dialogs\dialogsilverbulletpro.baml" />
+    <None Remove="images\icons\discord.png" />
+    <None Remove="views\stackerblocks\pageblockrequest.baml" />
+    <None Remove="views\custommessagebox\custommsgboxwindow.baml" />
+    <None Remove="app.baml" />
+    <None Remove="views\dialogs\dialoglsdoc.baml" />
+    <None Remove="views\main\settings\rurilib\captchas.baml" />
+    <None Remove="views\usercontrols\filters\usercontrolblur.baml" />
+    <None Remove="resources\sb-pro.jpeg" />
+    <None Remove="views\usercontrols\filters\usercontrolinputtextandenum.baml" />
+    <None Remove="themes\metrodark\metrodark.mscontrols.toolkit.implicit.baml" />
+    <None Remove="images\icons\right.png" />
+    <None Remove="views\main\pluginssection.baml" />
+    <None Remove="images\icons\minus.png" />
+    <Resource Include="views\dialogs\dialogsetproxies.baml" LogicalName="views/dialogs/dialogsetproxies.baml" />
+    <Resource Include="images\icons\filter.png" LogicalName="images/icons/filter.png" />
+    <Resource Include="views\main\verifiedmarket.baml" LogicalName="views/main/verifiedmarket.baml" />
+    <Resource Include="themes\metrodark\styles.shared.baml" LogicalName="themes/metrodark/styles.shared.baml" />
+    <Resource Include="views\main\requirespage.baml" LogicalName="views/main/requirespage.baml" />
+    <Resource Include="images\icons\load.png" LogicalName="images/icons/load.png" />
+    <Resource Include="images\icons\add-32.png" LogicalName="images/icons/add-32.png" />
+    <Resource Include="views\stackerblocks\pageblocktcp.baml" LogicalName="views/stackerblocks/pageblocktcp.baml" />
+    <Resource Include="views\main\configs\otheroptions\proxies.baml" LogicalName="views/main/configs/otheroptions/proxies.baml" />
+    <Resource Include="images\icons\maximize.png" LogicalName="images/icons/maximize.png" />
+    <Resource Include="views\dialogs\dialogaddwordlist.baml" LogicalName="views/dialogs/dialogaddwordlist.baml" />
+    <Resource Include="images\icons\play.png" LogicalName="images/icons/play.png" />
+    <Resource Include="views\usercontrols\filters\usercontrolnegate.baml" LogicalName="views/usercontrols/filters/usercontrolnegate.baml" />
+    <Resource Include="views\main\wordlistmanager.baml" LogicalName="views/main/wordlistmanager.baml" />
+    <Resource Include="views\usercontrols\filters\usercontrolenumbox.baml" LogicalName="views/usercontrols/filters/usercontrolenumbox.baml" />
+    <Resource Include="views\usercontrols\buttoncontainer.baml" LogicalName="views/usercontrols/buttoncontainer.baml" />
+    <Resource Include="views\main\settings\rurilib\selenium.baml" LogicalName="views/main/settings/rurilib/selenium.baml" />
+    <Resource Include="images\themes\empty.png" LogicalName="images/themes/empty.png" />
+    <Resource Include="images\icons\log.png" LogicalName="images/icons/log.png" />
+    <Resource Include="images\icons\git.png" LogicalName="images/icons/git.png" />
+    <Resource Include="views\main\runnermanager.baml" LogicalName="views/main/runnermanager.baml" />
+    <Resource Include="views\main\settings\openbullet\sources.baml" LogicalName="views/main/settings/openbullet/sources.baml" />
+    <Resource Include="views\main\settings\openbullet\general.baml" LogicalName="views/main/settings/openbullet/general.baml" />
+    <Resource Include="views\stackerblocks\pageblockwebsocket.baml" LogicalName="views/stackerblocks/pageblockwebsocket.baml" />
+    <Resource Include="images\icons\grip.png" LogicalName="images/icons/grip.png" />
+    <Resource Include="views\usercontrols\filters\usercontrolinputtextandboolean.baml" LogicalName="views/usercontrols/filters/usercontrolinputtextandboolean.baml" />
+    <!-- CheckUpdatePage.xaml auto-included by SDK glob -->
+    <Resource Include="views\main\configs\otheroptions\inputs.baml" LogicalName="views/main/configs/otheroptions/inputs.baml" />
+    <Resource Include="views\main\toolssection.baml" LogicalName="views/main/toolssection.baml" />
+    <Resource Include="views\main\configs\configmanager.baml" LogicalName="views/main/configs/configmanager.baml" />
+    <Resource Include="views\main\configs\configocrsettings.baml" LogicalName="views/main/configs/configocrsettings.baml" />
+    <Resource Include="views\main\configs\configotheroptions.baml" LogicalName="views/main/configs/configotheroptions.baml" />
+    <Resource Include="images\icons\add-512.png" LogicalName="images/icons/add-512.png" />
+    <Resource Include="themes\metrodark\metrodark.mscontrols.core.implicit.baml" LogicalName="themes/metrodark/metrodark.mscontrols.core.implicit.baml" />
+    <Resource Include="fonts\fontawesome-webfont.ttf" LogicalName="fonts/fontawesome-webfont.ttf" />
+    <Resource Include="images\icons\code.png" LogicalName="images/icons/code.png" />
+    <Resource Include="images\icons\import.png" LogicalName="images/icons/import.png" />
+    <Resource Include="views\main\settings\obsettings.baml" LogicalName="views/main/settings/obsettings.baml" />
+    <Resource Include="oblogoicon.ico" LogicalName="oblogoicon.ico" />
+    <Resource Include="views\stackerblocks\pagesblockelementaction.baml" LogicalName="views/stackerblocks/pagesblockelementaction.baml" />
+    <Resource Include="images\icons\scan.png" LogicalName="images/icons/scan.png" />
+    <Resource Include="views\main\settings\rurilib\ocr.baml" LogicalName="views/main/settings/rurilib/ocr.baml" />
+    <Resource Include="images\icons\stop.png" LogicalName="images/icons/stop.png" />
+    <Resource Include="fonts\centurygothicbold.ttf" LogicalName="fonts/centurygothicbold.ttf" />
+    <Resource Include="images\icons\clone.png" LogicalName="images/icons/clone.png" />
+    <Resource Include="views\main\runner\runner.baml" LogicalName="views/main/runner/runner.baml" />
+    <Resource Include="views\usercontrols\usercontrolwordlist.baml" LogicalName="views/usercontrols/usercontrolwordlist.baml" />
+    <Resource Include="views\main\settings\openbullet\sounds.baml" LogicalName="views/main/settings/openbullet/sounds.baml" />
+    <Resource Include="views\main\hitsdb.baml" LogicalName="views/main/hitsdb.baml" />
+    <Resource Include="views\usercontrols\usercontroltext.baml" LogicalName="views/usercontrols/usercontroltext.baml" />
+    <Resource Include="views\main\tools\tessdatadownloads.baml" LogicalName="views/main/tools/tessdatadownloads.baml" />
+    <Resource Include="views\stackerblocks\blockpluginpage.baml" LogicalName="views/stackerblocks/blockpluginpage.baml" />
+    <Resource Include="images\icons\star.png" LogicalName="images/icons/star.png" />
+    <Resource Include="views\usercontrols\usercontrolsupport.baml" LogicalName="views/usercontrols/usercontrolsupport.baml" />
+    <Resource Include="views\main\silverzone.baml" LogicalName="views/main/silverzone.baml" />
+    <Resource Include="images\icons\search.png" LogicalName="images/icons/search.png" />
+    <Resource Include="views\usercontrols\filters\usercontrolfastnlmeansdenoisingcolored.baml" LogicalName="views/usercontrols/filters/usercontrolfastnlmeansdenoisingcolored.baml" />
+    <Resource Include="maindialog.baml" LogicalName="maindialog.baml" />
+    <Resource Include="views\stackerblocks\pagesblocknavigate.baml" LogicalName="views/stackerblocks/pagesblocknavigate.baml" />
+    <Resource Include="views\main\releasenotespage.baml" LogicalName="views/main/releasenotespage.baml" />
+    <Resource Include="images\icons\disable.png" LogicalName="images/icons/disable.png" />
+    <Resource Include="views\main\configs\otheroptions\compile.baml" LogicalName="views/main/configs/otheroptions/compile.baml" />
+    <Resource Include="views\dialogs\dialogaddblock.baml" LogicalName="views/dialogs/dialogaddblock.baml" />
+    <Resource Include="views\usercontrols\filters\usercontrolcroplayer.baml" LogicalName="views/usercontrols/filters/usercontrolcroplayer.baml" />
+    <Resource Include="images\icons\stack.png" LogicalName="images/icons/stack.png" />
+    <Resource Include="views\main\settings\rurilib\general.baml" LogicalName="views/main/settings/rurilib/general.baml" />
+    <Resource Include="views\stackerblocks\pageblockbypasscf.baml" LogicalName="views/stackerblocks/pageblockbypasscf.baml" />
+    <Resource Include="icon\svbfile.ico" LogicalName="icon/svbfile.ico" />
+    <Resource Include="views\dialogs\dialogselectwordlist.baml" LogicalName="views/dialogs/dialogselectwordlist.baml" />
+    <Resource Include="images\icons\new.png" LogicalName="images/icons/new.png" />
+    <Resource Include="views\main\tools\wordlisttools.baml" LogicalName="views/main/tools/wordlisttools.baml" />
+    <Resource Include="images\icons\add-128.png" LogicalName="images/icons/add-128.png" />
+    <Resource Include="views\main\configs\otheroptions\requests.baml" LogicalName="views/main/configs/otheroptions/requests.baml" />
+    <!-- help.baml replaced by Help.xaml (auto-included by SDK) -->
+    <Resource Include="logwindow.baml" LogicalName="logwindow.baml" />
+    <Resource Include="images\silverbullet-20icon.ico" LogicalName="images/silverbullet%20icon.ico" />
+    <Resource Include="views\usercontrols\usercontrolconfig.baml" LogicalName="views/usercontrols/usercontrolconfig.baml" />
+    <Resource Include="views\main\aboutpage.baml" LogicalName="views/main/aboutpage.baml" />
+    <Resource Include="loadingwindow.baml" LogicalName="loadingwindow.baml" />
+    <Resource Include="views\main\supporters.baml" LogicalName="views/main/supporters.baml" />
+    <Resource Include="images\icons\undo.png" LogicalName="images/icons/undo.png" />
+    <Resource Include="images\obicon.png" LogicalName="images/obicon.png" />
+    <Resource Include="views\usercontrols\usercontrolnumeric.baml" LogicalName="views/usercontrols/usercontrolnumeric.baml" />
+    <Resource Include="views\dialogs\dialogselectconfig.baml" LogicalName="views/dialogs/dialogselectconfig.baml" />
+    <Resource Include="images\icons\filedocmultiple.png" LogicalName="images/icons/filedocmultiple.png" />
+    <Resource Include="views\dialogs\dialogcustominput.baml" LogicalName="views/dialogs/dialogcustominput.baml" />
+    <Resource Include="views\usercontrols\filters\usercontrolresolution.baml" LogicalName="views/usercontrols/filters/usercontrolresolution.baml" />
+    <Resource Include="views\stackerblocks\pageblockspeechtotext.baml" LogicalName="views/stackerblocks/pageblockspeechtotext.baml" />
+    <Resource Include="views\usercontrols\filters\usercontroladaptivethreshold.baml" LogicalName="views/usercontrols/filters/usercontroladaptivethreshold.baml" />
+    <Resource Include="images\icons\book.png" LogicalName="images/icons/book.png" />
+    <Resource Include="themes\metrodark\howtoapplytheme.txt" LogicalName="themes/metrodark/howtoapplytheme.txt" />
+    <Resource Include="views\dialogs\dialogeditwordlist.baml" LogicalName="views/dialogs/dialogeditwordlist.baml" />
+    <Resource Include="views\dialogs\dialogshowlog.baml" LogicalName="views/dialogs/dialogshowlog.baml" />
+    <Resource Include="views\main\configs\stacker.baml" LogicalName="views/main/configs/stacker.baml" />
+    <Resource Include="views\main\configs\otheroptions\selenium.baml" LogicalName="views/main/configs/otheroptions/selenium.baml" />
+    <Resource Include="views\stackerblocks\pageblockutility.baml" LogicalName="views/stackerblocks/pageblockutility.baml" />
+    <Resource Include="views\dialogs\findreplacedialog.baml" LogicalName="views/dialogs/findreplacedialog.baml" />
+    <Resource Include="views\stackerblocks\pageblockcaptcha.baml" LogicalName="views/stackerblocks/pageblockcaptcha.baml" />
+    <Resource Include="views\stackerblocks\pageblockreportcaptcha.baml" LogicalName="views/stackerblocks/pageblockreportcaptcha.baml" />
+    <Resource Include="views\usercontrols\usercontroltextmulti.baml" LogicalName="views/usercontrols/usercontroltextmulti.baml" />
+    <Resource Include="images\icons\tasks.png" LogicalName="images/icons/tasks.png" />
+    <Resource Include="fonts\centurygothicregular.ttf" LogicalName="fonts/centurygothicregular.ttf" />
+    <Resource Include="views\usercontrols\usercontrolcheckbox.baml" LogicalName="views/usercontrols/usercontrolcheckbox.baml" />
+    <Resource Include="images\icons\gears.png" LogicalName="images/icons/gears.png" />
+    <Resource Include="views\main\settings\rlsettings.baml" LogicalName="views/main/settings/rlsettings.baml" />
+    <Resource Include="views\usercontrols\usercontroldropdown.baml" LogicalName="views/usercontrols/usercontroldropdown.baml" />
+    <Resource Include="views\usercontrols\filters\usercontrolmorphology.baml" LogicalName="views/usercontrols/filters/usercontrolmorphology.baml" />
+    <Resource Include="views\usercontrols\filters\usercontrolcvtcolor.baml" LogicalName="views/usercontrols/filters/usercontrolcvtcolor.baml" />
+    <Resource Include="views\main\configssection.baml" LogicalName="views/main/configssection.baml" />
+    <Resource Include="views\usercontrols\filters\usercontrolinput.baml" LogicalName="views/usercontrols/filters/usercontrolinput.baml" />
+    <Resource Include="snowflake.baml" LogicalName="snowflake.baml" />
+    <Resource Include="views\main\tools\listgenerator.baml" LogicalName="views/main/tools/listgenerator.baml" />
+    <Resource Include="themes\metrodark\theme.colors.baml" LogicalName="themes/metrodark/theme.colors.baml" />
+    <Resource Include="images\icons\retry.png" LogicalName="images/icons/retry.png" />
+    <Resource Include="views\usercontrols\usercontrolfilepicker.baml" LogicalName="views/usercontrols/usercontrolfilepicker.baml" />
+    <Resource Include="images\icons\remove-20filter.png" LogicalName="images/icons/remove%20filter.png" />
+    <Resource Include="views\main\settings\rurilib\cefsharp.baml" LogicalName="views/main/settings/rurilib/cefsharp.baml" />
+    <Resource Include="views\dialogs\dialogaddproxies.baml" LogicalName="views/dialogs/dialogaddproxies.baml" />
+    <Resource Include="mainwindow.baml" LogicalName="mainwindow.baml" />
+    <Resource Include="views\stackerblocks\pageblockparse.baml" LogicalName="views/stackerblocks/pageblockparse.baml" />
+    <Resource Include="views\stackerblocks\pageblockocr.baml" LogicalName="views/stackerblocks/pageblockocr.baml" />
+    <Resource Include="views\stackerblocks\pagesblockexecutejs.baml" LogicalName="views/stackerblocks/pagesblockexecutejs.baml" />
+    <Resource Include="views\usercontrols\usercontrolcontainer.baml" LogicalName="views/usercontrols/usercontrolcontainer.baml" />
+    <Resource Include="images\icons\camera.png" LogicalName="images/icons/camera.png" />
+    <Resource Include="views\main\settings\openbullet\themes.baml" LogicalName="views/main/settings/openbullet/themes.baml" />
+    <Resource Include="views\usercontrols\plugincontrol.baml" LogicalName="views/usercontrols/plugincontrol.baml" />
+    <Resource Include="images\sbicon.png" LogicalName="images/sbicon.png" />
+    <Resource Include="noteswindow.baml" LogicalName="noteswindow.baml" />
+    <Resource Include="views\main\configs\otheroptions\general.baml" LogicalName="views/main/configs/otheroptions/general.baml" />
+    <Resource Include="views\dialogs\dialognewconfig.baml" LogicalName="views/dialogs/dialognewconfig.baml" />
+    <Resource Include="images\icons\up.png" LogicalName="images/icons/up.png" />
+    <Resource Include="views\main\settings\rurilib\proxies.baml" LogicalName="views/main/settings/rurilib/proxies.baml" />
+    <Resource Include="views\stackerblocks\pageblockrecaptcha.baml" LogicalName="views/stackerblocks/pageblockrecaptcha.baml" />
+    <Resource Include="views\dialogs\dialogselectbots.baml" LogicalName="views/dialogs/dialogselectbots.baml" />
+    <Resource Include="views\main\configs\otheroptions\data.baml" LogicalName="views/main/configs/otheroptions/data.baml" />
+    <Resource Include="views\stackerblocks\pageblocklscode.baml" LogicalName="views/stackerblocks/pageblocklscode.baml" />
+    <Resource Include="views\main\tools\seleniumtools.baml" LogicalName="views/main/tools/seleniumtools.baml" />
+    <Resource Include="views\usercontrols\filters\usercontrolhoughline.baml" LogicalName="views/usercontrols/filters/usercontrolhoughline.baml" />
+    <Resource Include="images\icons\sbicon.png" LogicalName="images/icons/sbicon.png" />
+    <Resource Include="images\icons\minimize.png" LogicalName="images/icons/minimize.png" />
+    <Resource Include="views\usercontrols\filters\usercontrolreplacecolor.baml" LogicalName="views/usercontrols/filters/usercontrolreplacecolor.baml" />
+    <Resource Include="views\usercontrols\filters\usercontrolthreshold.baml" LogicalName="views/usercontrols/filters/usercontrolthreshold.baml" />
+    <Resource Include="splashwindow.baml" LogicalName="splashwindow.baml" />
+    <Resource Include="views\main\proxymanager.baml" LogicalName="views/main/proxymanager.baml" />
+    <Resource Include="images\icons\down.png" LogicalName="images/icons/down.png" />
+    <Resource Include="views\usercontrols\usercontrolinfotext.baml" LogicalName="views/usercontrols/usercontrolinfotext.baml" />
+    <Resource Include="images\icons\folder.png" LogicalName="images/icons/folder.png" />
+    <Resource Include="views\stackerblocks\pageblockkeycheck.baml" LogicalName="views/stackerblocks/pageblockkeycheck.baml" />
+    <Resource Include="themes\metrodark\styles.wpf.baml" LogicalName="themes/metrodark/styles.wpf.baml" />
+    <Resource Include="views\stackerblocks\pageblocksolvecaptcha.baml" LogicalName="views/stackerblocks/pageblocksolvecaptcha.baml" />
+    <Resource Include="views\stackerblocks\pagesblockbrowseraction.baml" LogicalName="views/stackerblocks/pagesblockbrowseraction.baml" />
+    <Resource Include="images\icons\delete.png" LogicalName="images/icons/delete.png" />
+    <Resource Include="views\stackerblocks\pageblockfunction.baml" LogicalName="views/stackerblocks/pageblockfunction.baml" />
+    <Resource Include="views\main\settings.baml" LogicalName="views/main/settings.baml" />
+    <Resource Include="images\icons\save.png" LogicalName="images/icons/save.png" />
+    <Resource Include="images\icons\plus.png" LogicalName="images/icons/plus.png" />
+    <Resource Include="views\usercontrols\usercontrolmarket.baml" LogicalName="views/usercontrols/usercontrolmarket.baml" />
+    <Resource Include="views\usercontrols\filters\usercontrolresize.baml" LogicalName="views/usercontrols/filters/usercontrolresize.baml" />
+    <Resource Include="images\icons\left.png" LogicalName="images/icons/left.png" />
+    <Resource Include="images\icons\quit.png" LogicalName="images/icons/quit.png" />
+    <Resource Include="views\dialogs\dialogsilverbulletpro.baml" LogicalName="views/dialogs/dialogsilverbulletpro.baml" />
+    <Resource Include="images\icons\discord.png" LogicalName="images/icons/discord.png" />
+    <Resource Include="views\stackerblocks\pageblockrequest.baml" LogicalName="views/stackerblocks/pageblockrequest.baml" />
+    <Resource Include="views\custommessagebox\custommsgboxwindow.baml" LogicalName="views/custommessagebox/custommsgboxwindow.baml" />
+    <Resource Include="app.baml" LogicalName="app.baml" />
+    <Resource Include="views\dialogs\dialoglsdoc.baml" LogicalName="views/dialogs/dialoglsdoc.baml" />
+    <Resource Include="views\main\settings\rurilib\captchas.baml" LogicalName="views/main/settings/rurilib/captchas.baml" />
+    <Resource Include="views\usercontrols\filters\usercontrolblur.baml" LogicalName="views/usercontrols/filters/usercontrolblur.baml" />
+    <Resource Include="resources\sb-pro.jpeg" LogicalName="resources/sb-pro.jpeg" />
+    <Resource Include="views\usercontrols\filters\usercontrolinputtextandenum.baml" LogicalName="views/usercontrols/filters/usercontrolinputtextandenum.baml" />
+    <Resource Include="themes\metrodark\metrodark.mscontrols.toolkit.implicit.baml" LogicalName="themes/metrodark/metrodark.mscontrols.toolkit.implicit.baml" />
+    <Resource Include="images\icons\right.png" LogicalName="images/icons/right.png" />
+    <Resource Include="views\main\pluginssection.baml" LogicalName="views/main/pluginssection.baml" />
+    <Resource Include="images\icons\minus.png" LogicalName="images/icons/minus.png" />
+    <Resource Include="app.ico" LogicalName="app.ico" />
+  </ItemGroup>
+</Project>

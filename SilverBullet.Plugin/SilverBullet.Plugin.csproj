@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>SilverBullet.Plugin</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>True</UseWPF>
+    <LangVersion>12.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RuriLib\RuriLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- PluginFramework: sin source disponible -->
+    <Reference Include="PluginFramework">
+      <HintPath>..\..\Telegram Desktop\SilverBullet.v1.1.4 Re-upload\SilverBullet.v1.1.4 Re-upload\bin\PluginFramework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
